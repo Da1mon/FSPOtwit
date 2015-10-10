@@ -8,7 +8,7 @@
 
 namespace app\controllers;
 
-use app\models\ProfileChangeForm;
+use app\models\PasswordChangeForm;
 use app\models\User;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -49,15 +49,17 @@ class ProfileController extends Controller
     public function actionUpdate()
     {
         $model = $this->findModel();
-        $model2 = new ProfileChangeForm($model);
+        $model2 = new PasswordChangeForm($model);
 
         $model->scenario = User::SCENARIO_PROFILE;
 
 
         if($model->load(Yii::$app->request->post()) &&  $model->save()) {
+            Yii::$app->getSession()->setFlash('success', 'Параметры успешно изменены.');
             return $this->redirect(['index']);
         }
         if ($model2->load(Yii::$app->request->post()) &&  $model2->changePassword()) {
+            Yii::$app->getSession()->setFlash('success', 'Пароль успешно изменен.');
             return $this->redirect(['index']);
         }
         return $this->render('update',['model'=>$model,'model2'=>$model2]);

@@ -13,6 +13,8 @@ $params = ArrayHelper::merge(
 );
 
 return [
+    'name' => 'FSPOtwit',
+    'language'=>'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [

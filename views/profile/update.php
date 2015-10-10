@@ -10,6 +10,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
+/* @var $model2 app\models\PasswordChangeForm */
 
 $this->title = 'Редактирование';
 $this->params['breadcrumbs'][] = ['label' => 'Профиль', 'url' => ['index']];
@@ -25,6 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
                 <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+                <h3 class="page-header" style="margin-top: 10px;">Личные данные</h3>
+                <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
 
 
                 <div class="form-group">

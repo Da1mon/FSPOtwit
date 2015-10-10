@@ -12,7 +12,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = 'Profile';
+$this->title = 'Профиль';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="profile">
@@ -24,6 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
                'attributes' => [
                    'username',
                    'email',
+                   'firstname',
+                   'lastname',
+               ],
+               'formatter' => [
+                   'class' => '\yii\i18n\Formatter',
+                   'nullDisplay' => 'Не указано',
                ],
            ]) ?>
        </div>

@@ -12,7 +12,7 @@ use yii\base\InvalidParamException;
 use yii\base\Model;
 use Yii;
 
-class ProfileChangeForm extends Model
+class PasswordChangeForm extends Model
 {
     public $currentPassword;
     public $newPassword;

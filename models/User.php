@@ -22,6 +22,8 @@ use \yii\db\ActiveRecord;
  * @property string $password_reset_token
  * @property string $email
  * @property integer $status
+ * @property string $firstname
+ * @property string $lastname
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -54,6 +56,10 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
+            ['firstname', 'string', 'min' => 2, 'max' => 20],
+            ['firstname', 'match', 'pattern' => '/^[а-яА-ЯёЁa-zA-Z]+$/u', 'message' => 'Используется латиница или кириллица'],
+            ['lastname', 'string', 'min' => 2, 'max' => 20],
+            ['lastname', 'match', 'pattern' => '/^[а-яА-ЯёЁa-zA-Z]+$/u'],
         ];
     }
 
@@ -61,7 +67,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         return ArrayHelper::merge(parent::scenarios(), [
-            self::SCENARIO_PROFILE => ['email', 'username'],
+            self::SCENARIO_PROFILE => ['email', 'username','firstname','lastname'],
         ]);
     }
 
@@ -77,6 +83,9 @@ class User extends ActiveRecord implements IdentityInterface
             'username' => "Имя пользователя",
             'email' => "Email",
             'status' => Yii::t('app', 'USER_STATUS'),
+            'firstname' => "Имя",
+            'lastname' => "Фамилия",
+
 
         ];
     }
