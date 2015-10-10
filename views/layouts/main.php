@@ -45,10 +45,12 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Signup', 'url' => ['/default/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/default/login']];
     } else {
+        $menuItems[] = ['label' => 'Profile', 'url' => ['/profile/index']];
         $menuItems[] = [
             'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
             'url' => ['/default/logout'],
             'linkOptions' => ['data-method' => 'post']
+
         ];
     }
     echo Nav::widget([

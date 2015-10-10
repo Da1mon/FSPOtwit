@@ -25,6 +25,7 @@ use \yii\db\ActiveRecord;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const SCENARIO_PROFILE = 'profile';
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_WAIT = 2;
@@ -56,6 +57,14 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+
+    public function scenarios()
+    {
+        return ArrayHelper::merge(parent::scenarios(), [
+            self::SCENARIO_PROFILE => ['email', 'username'],
+        ]);
+    }
+
     /**
      * @inheritdoc
      */
@@ -65,11 +74,13 @@ class User extends ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'created_at' => Yii::t('app', 'USER_CREATED'),
             'updated_at' => Yii::t('app', 'USER_UPDATED'),
-            'username' => Yii::t('app', 'USER_USERNAME'),
-            'email' => Yii::t('app', 'USER_EMAIL'),
+            'username' => "Имя пользователя",
+            'email' => "Email",
             'status' => Yii::t('app', 'USER_STATUS'),
+
         ];
     }
+
     /**
      * @inheritdoc
      */
