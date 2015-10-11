@@ -11,7 +11,7 @@ use yii\helpers\Html;
 <div class="user-index">
     <div class="jumbotron">
         <h1>
-            Привет <?= Html::encode($username) ?>!
+            Привет, <?= Html::encode($username) ?>!
         </h1>
         <p class="lead">Вы находитесь на главной странице сервиса <strong>FSPOtwit</strong></p>
     </div>
