@@ -10,9 +10,11 @@ namespace app\controllers;
 
 use app\models\PasswordChangeForm;
 use app\models\User;
+use app\models\UserUploadAvatarForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
+use yii\web\UploadedFile;
 
 class ProfileController extends Controller
 {
@@ -49,10 +51,11 @@ class ProfileController extends Controller
     public function actionUpdate()
     {
         $model = $this->findModel();
-        $model2 = new PasswordChangeForm($model);
-
         $model->scenario = User::SCENARIO_PROFILE;
 
+        $model2 = new PasswordChangeForm($model);
+
+        $model3 = new UserUploadAvatarForm();
 
         if($model->load(Yii::$app->request->post()) &&  $model->save()) {
             Yii::$app->getSession()->setFlash('success', 'Параметры успешно изменены.');
@@ -62,7 +65,15 @@ class ProfileController extends Controller
             Yii::$app->getSession()->setFlash('success', 'Пароль успешно изменен.');
             return $this->redirect(['index']);
         }
-        return $this->render('update',['model'=>$model,'model2'=>$model2]);
+        if(Yii::$app->request->isPost) {
+            $model3->file = UploadedFile::getInstance($model3, 'file');
+
+            if ($model3->file && $model3->validate()) {
+                $model3->file->saveAs('uploads/' . $model3->file->baseName . '.' . $model3->file->extension);
+                return $this->redirect(['index']);
+            }
+        }
+        return $this->render('update',['model'=>$model,'model2'=>$model2, 'model3'=>$model3]);
 
     }
 }

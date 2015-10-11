@@ -11,6 +11,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 /* @var $model2 app\models\PasswordChangeForm */
+/* @var $model3 app\models\UserUploadAvatarForm */
 
 $this->title = 'Редактирование';
 $this->params['breadcrumbs'][] = ['label' => 'Профиль', 'url' => ['index']];
@@ -48,6 +49,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <?php ActiveForm::end(); ?>
+            </div>
+            <div class="col-lg-5 col-lg-offset-1">
+                <h3 class="page-header" style="margin-top: 10px;" >Загрузить аватар</h3>
+                <?php $form3 = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
+                <?= $form3->field($model3, 'file')->fileInput()->label(false) ?>
+
+                <div class="form-group">
+                    <?= Html::submitButton('Загрузить файл', ['class' => 'btn btn-primary']) ?>
+                </div>
+
+                <?php ActiveForm::end() ?>
             </div>
         </div>
     </div>
