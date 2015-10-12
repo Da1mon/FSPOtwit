@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
 use yii\web\UploadedFile;
+use yii\imagine\Image;
 
 class ProfileController extends Controller
 {
@@ -65,12 +66,29 @@ class ProfileController extends Controller
             Yii::$app->getSession()->setFlash('success', 'Пароль успешно изменен.');
             return $this->redirect(['index']);
         }
-        if(Yii::$app->request->isPost) {
-            $model3->file = UploadedFile::getInstance($model3, 'file');
 
-            if ($model3->file && $model3->validate()) {
-                $model3->file->saveAs('uploads/' . $model3->file->baseName . '.' . $model3->file->extension);
-                return $this->redirect(['index']);
+        if ($model3->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model3, 'file');
+            if (!is_null($image)) {
+                // save with image
+                // store the source file name
+                $model3->filename = $image->name;
+                $ext = end(explode(".", $image->name));
+                // generate a unique file name to prevent duplicate filenames
+                $model3->avatar = Yii::$app->security->generateRandomString().".{$ext}";
+                // the path to save file, you can set an uploadPath
+                // in Yii::$app->params (as used in example below)
+                Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/';
+                $path = Yii::$app->params['uploadPath']  . $model3->avatar;
+                //$model->user_id = Yii::$app->user->getId();
+                //if($model->update()){
+                $image->saveAs($path);
+                Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 120, 120)
+                    ->save(Yii::$app->params['uploadPath'].'sqr_'.$model3->avatar, ['quality' => 50]);
+                Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 30, 30)
+                    ->save(Yii::$app->params['uploadPath'].'sm_'.$model3->avatar, ['quality' => 50]);
+
+
             }
         }
         return $this->render('update',['model'=>$model,'model2'=>$model2, 'model3'=>$model3]);

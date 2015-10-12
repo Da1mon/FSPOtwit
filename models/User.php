@@ -47,11 +47,11 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['username', 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
-            ['username', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'ERROR_USERNAME_EXISTS')],
+            ['username', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с таким именем уже зарегистрирован'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => self::className(), 'message' => Yii::t('app', 'ERROR_EMAIL_EXISTS')],
+            ['email', 'unique', 'targetClass' => self::className(), 'message' => 'Пользователь с таким эл. адресом уже зарегистрирован'],
             ['email', 'string', 'max' => 255],
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
@@ -78,13 +78,13 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'created_at' => Yii::t('app', 'USER_CREATED'),
-            'updated_at' => Yii::t('app', 'USER_UPDATED'),
-            'username' => "Имя пользователя",
-            'email' => "Email",
-            'status' => Yii::t('app', 'USER_STATUS'),
-            'firstname' => "Имя",
-            'lastname' => "Фамилия",
+            'created_at' => 'Зарегистрирован',
+            'updated_at' => 'Обновлен',
+            'username' => 'Имя пользователя',
+            'email' => 'Email',
+            'status' => 'Статус',
+            'firstname' => 'Имя',
+            'lastname' => 'Фамилия',
 
 
         ];
@@ -106,9 +106,9 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getStatusesArray()
     {
         return [
-            self::STATUS_BLOCKED => Yii::t('app', 'USER_STATUS_BLOCKED'),
-            self::STATUS_ACTIVE => Yii::t('app', 'USER_STATUS_ACTIVE'),
-            self::STATUS_WAIT => Yii::t('app', 'USER_STATUS_WAIT'),
+            self::STATUS_BLOCKED => 'Заблокирован',
+            self::STATUS_ACTIVE => 'Активен',
+            self::STATUS_WAIT => 'Ожидает подтверждения',
         ];
     }
     /**

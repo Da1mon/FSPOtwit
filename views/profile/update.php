@@ -7,6 +7,7 @@
  */
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
@@ -52,15 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col-lg-5 col-lg-offset-1">
                 <h3 class="page-header" style="margin-top: 10px;" >Загрузить аватар</h3>
-                <?php $form3 = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
-
-                <?= $form3->field($model3, 'file')->fileInput()->label(false) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Загрузить файл', ['class' => 'btn btn-primary']) ?>
-                </div>
-
-                <?php ActiveForm::end() ?>
+                <?php $form3 = ActiveForm::begin([
+                    'options'=>['enctype'=>'multipart/form-data'] // important
+                ]); ?>
+                <?= $form3->field($model3, 'file')->widget(FileInput::classname(), [
+                    'options' => ['accept' => 'image/*'],
+                    'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
+                ])
+                ->label(false);   ?>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
