@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "715f53892f8f2471181c843117d33e76",
-    "content-hash": "c0c353e0b6c64c1ddf4beed017a04307",
+    "hash": "c37634337c4a4c39af3d3b96dabc2a50",
+    "content-hash": "13aff554c54ad6af026b5d4ffee64d1d",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -530,49 +530,6 @@
                 "yii2"
             ],
             "time": "2015-08-17 13:03:50"
-        },
-        {
-            "name": "nepster-web/yii2-faceviewer-widget",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nepster-web/yii2-faceviewer-widget.git",
-                "reference": "c8fe8ea5c908e24c0e823c566275ab3698a44bdf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nepster-web/yii2-faceviewer-widget/zipball/c8fe8ea5c908e24c0e823c566275ab3698a44bdf",
-                "reference": "c8fe8ea5c908e24c0e823c566275ab3698a44bdf",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-widget",
-            "autoload": {
-                "psr-4": {
-                    "nepster\\faceviewer\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nepster",
-                    "email": "nepsterxxx@mail.ru"
-                }
-            ],
-            "description": "Виджет для отображения представления пользователя",
-            "keywords": [
-                "user avatar",
-                "user photo",
-                "widget",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2015-08-14 12:57:42"
         },
         {
             "name": "swiftmailer/swiftmailer",
