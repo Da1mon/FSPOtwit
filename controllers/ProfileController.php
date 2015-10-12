@@ -56,7 +56,7 @@ class ProfileController extends Controller
 
         $model2 = new PasswordChangeForm($model);
 
-        $model3 = new UserUploadAvatarForm();
+        $model3 = new UserUploadAvatarForm($model);
 
         if($model->load(Yii::$app->request->post()) &&  $model->save()) {
             Yii::$app->getSession()->setFlash('success', 'Параметры успешно изменены.');
@@ -87,7 +87,7 @@ class ProfileController extends Controller
                     ->save(Yii::$app->params['uploadPath'].'sqr_'.$model3->avatar, ['quality' => 50]);
                 Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 30, 30)
                     ->save(Yii::$app->params['uploadPath'].'sm_'.$model3->avatar, ['quality' => 50]);
-
+                $model3->updateUser();
 
             }
         }

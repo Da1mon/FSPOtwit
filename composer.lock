@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "51f89921c01db1a8181a7675c066fdfa",
-    "content-hash": "13aff554c54ad6af026b5d4ffee64d1d",
+    "hash": "715f53892f8f2471181c843117d33e76",
+    "content-hash": "c0c353e0b6c64c1ddf4beed017a04307",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -532,6 +532,49 @@
             "time": "2015-08-17 13:03:50"
         },
         {
+            "name": "nepster-web/yii2-faceviewer-widget",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nepster-web/yii2-faceviewer-widget.git",
+                "reference": "c8fe8ea5c908e24c0e823c566275ab3698a44bdf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nepster-web/yii2-faceviewer-widget/zipball/c8fe8ea5c908e24c0e823c566275ab3698a44bdf",
+                "reference": "c8fe8ea5c908e24c0e823c566275ab3698a44bdf",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-widget",
+            "autoload": {
+                "psr-4": {
+                    "nepster\\faceviewer\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nepster",
+                    "email": "nepsterxxx@mail.ru"
+                }
+            ],
+            "description": "Виджет для отображения представления пользователя",
+            "keywords": [
+                "user avatar",
+                "user photo",
+                "widget",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2015-08-14 12:57:42"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "5.x-dev",
             "source": {
@@ -590,12 +633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "fa6453b46b5392c06d3afb039896e0a328a8cbdf"
+                "reference": "6f4f0b86030e79d97c0c9084659b5a313c4a3c2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/fa6453b46b5392c06d3afb039896e0a328a8cbdf",
-                "reference": "fa6453b46b5392c06d3afb039896e0a328a8cbdf",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/6f4f0b86030e79d97c0c9084659b5a313c4a3c2d",
+                "reference": "6f4f0b86030e79d97c0c9084659b5a313c4a3c2d",
                 "shasum": ""
             },
             "require": {
@@ -671,7 +714,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-10-11 07:58:42"
+            "time": "2015-10-12 13:52:19"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -903,12 +946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "5c3fa245495903957df6737347cce04d0919a781"
+                "reference": "9198c2f7668b9ee494959f8ff7f5f6e6f65379ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5c3fa245495903957df6737347cce04d0919a781",
-                "reference": "5c3fa245495903957df6737347cce04d0919a781",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/9198c2f7668b9ee494959f8ff7f5f6e6f65379ca",
+                "reference": "9198c2f7668b9ee494959f8ff7f5f6e6f65379ca",
                 "shasum": ""
             },
             "require": {
@@ -945,7 +988,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-10-06 08:17:03"
+            "time": "2015-10-12 15:48:46"
         },
         {
             "name": "phpspec/php-diff",

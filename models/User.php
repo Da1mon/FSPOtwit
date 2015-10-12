@@ -24,6 +24,8 @@ use \yii\db\ActiveRecord;
  * @property integer $status
  * @property string $firstname
  * @property string $lastname
+ * @property string $avatar
+ * @property string $filename
  */
 class User extends ActiveRecord implements IdentityInterface
 {

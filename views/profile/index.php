@@ -8,7 +8,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use nepster\faceviewer\Widget;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
@@ -32,9 +32,29 @@ $this->params['breadcrumbs'][] = $this->title;
                    'nullDisplay' => 'Не указано',
                ],
            ]) ?>
+           <p class="pull-right">
+               <?= Html::a('Редактировать', ['update'], ['class' => 'btn btn-primary']) ?>
+           </p>
+       </div>
+       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+           <?= Widget::widget([
+               // шаблон отображения
+               'template' => '<div class="user-image">{face}</div>',
+               // Поле текущего изображения
+               'faceField' => 'avatar',
+               // Массив Данных пользователя
+               'data' => $model,
+               // Url адрес с загруженными аватарками
+               'faceUrl' => '/basic/web/uploads',
+               // Директория с загруженными аватарками на сервере
+               //'facePath' => '/basic/web/uploads',
+               // Url адрес с аватарками по умолчанию
+               'faceUrlDefault' => '/basic/web/img/avatars',
+               // Дефолтная аватарка
+               'faceDefault' => 'default_avatar.png',
+               'faceImgOptions' => ['class' => 'img-rounded'],
+
+           ]);?>
        </div>
    </div>
-    <p>
-        <?= Html::a('Редактировать', ['update'], ['class' => 'btn btn-primary']) ?>
-    </p>
 </div>
