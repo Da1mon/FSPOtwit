@@ -36,8 +36,13 @@ class ProfileController extends Controller
 
     public function actionIndex()
     {
+        $model = $this->findModel();
+        $pathToUserImg = Yii::$app->homeUrl . 'uploads';
+        $pathToDefaultImg = Yii::$app->homeUrl . 'img/avatars';
         return $this->render('index', [
-            'model' => $this->findModel(),
+            'model' => $model,
+            'pathToUserImg' => $pathToUserImg,
+            'pathToDefaultImg' => $pathToDefaultImg,
         ]);
     }
 
