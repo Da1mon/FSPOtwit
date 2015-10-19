@@ -11,8 +11,7 @@ use yii\widgets\DetailView;
 use nepster\faceviewer\Widget;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
-/* @var $pathToUserImg */
-/* @var $pathToDefaultImg */
+
 $this->title = 'Профиль';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -46,11 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                // Массив Данных пользователя
                'data' => $model,
                // Url адрес с загруженными аватарками
-               'faceUrl' => $pathToUserImg,
+               'faceUrl' => '/FSPOtwit/web/uploads',
                // Директория с загруженными аватарками на сервере
-               //'facePath' => $path,
+               //'facePath' => '/basic/web/uploads',
                // Url адрес с аватарками по умолчанию
-               'faceUrlDefault' => $pathToDefaultImg,
+               'faceUrlDefault' => '/FSPOtwit/web/img/avatars',
                // Дефолтная аватарка
                'faceDefault' => 'default_avatar.png',
                'faceImgOptions' => ['class' => 'img-rounded'],
