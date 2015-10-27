@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="user-form">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-5">
+                <div class="well opacity">
                 <h3 class="page-header" style="margin-top: 10px;">Основные Параметры</h3>
                 <?php $form = ActiveForm::begin(); ?>
 
@@ -50,18 +51,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <?php ActiveForm::end(); ?>
+                </div>
             </div>
-            <div class="col-lg-5 col-lg-offset-1">
-                <h3 class="page-header" style="margin-top: 10px;" >Загрузить аватар</h3>
-                <?php $form3 = ActiveForm::begin([
-                    'options'=>['enctype'=>'multipart/form-data'] // important
-                ]); ?>
-                <?= $form3->field($model3, 'file')->widget(FileInput::classname(), [
-                    'options' => ['accept' => 'image/*'],
-                    'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
-                ])
-                ->label(false);   ?>
-                <?php ActiveForm::end(); ?>
+            <div class="col-lg-5">
+                <div class="well opacity">
+                    <h3 class="page-header" style="margin-top: 10px;" >Загрузить аватар</h3>
+                    <?php $form3 = ActiveForm::begin([
+                        'options'=>['enctype'=>'multipart/form-data'] // important
+                    ]); ?>
+                    <?= $form3->field($model3, 'file')->widget(FileInput::classname(), [
+                        'options' => ['accept' => 'image/*'],
+                        'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
+                    ])
+                    ->label(false);   ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
             </div>
         </div>
     </div>

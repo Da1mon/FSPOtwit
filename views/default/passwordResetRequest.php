@@ -21,12 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'password-reset-request-form']); ?>
-            <?= $form->field($model, 'email') ?>
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'reset-button']) ?>
+            <div class="well opacity">
+                <?php $form = ActiveForm::begin(['id' => 'password-reset-request-form']); ?>
+                <?= $form->field($model, 'email') ?>
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-primary', 'name' => 'reset-button']) ?>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>

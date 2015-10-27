@@ -25,7 +25,14 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<?php
+    $path = Yii::$app->homeUrl . 'img/Background.jpg';
+    $options = [
+        'class' => ['wrap', 'background-img' ],
+        'style' => 'background-image:url('. $path .')',
+    ];
+    echo Html::beginTag('div', $options);
+?>
     <?php
     NavBar::begin([
         'brandLabel' => 'FSPOtwit',
@@ -64,7 +71,7 @@ AppAsset::register($this);
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
-</div>
+<?php echo Html::endTag('div') ?>
 
 <footer class="footer">
     <div class="container">
