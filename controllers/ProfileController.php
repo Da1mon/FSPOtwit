@@ -90,7 +90,7 @@ class ProfileController extends Controller
                 $image->saveAs($path);
                 Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 120, 120)
                     ->save(Yii::$app->params['uploadPath'].'sqr_'.$model3->avatar, ['quality' => 50]);
-                Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 30, 30)
+                Image::thumbnail(Yii::$app->params['uploadPath'].$model3->avatar, 50, 50)
                     ->save(Yii::$app->params['uploadPath'].'sm_'.$model3->avatar, ['quality' => 50]);
                 $model3->updateUser();
 

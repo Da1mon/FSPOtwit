@@ -91,13 +91,28 @@ a.desc:after {
 }
 
 .background-img {
-    no-repeat: center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;"
+    background-size: cover;
+    background-position: top center;
+    background-attachment: fixed;
 }
 
 .opacity {
     background-color: rgba(255, 255, 255, 0.73);
+}
+
+.padding-fix {
+    padding-top: 5px;
+    padding-left: 5px;
+    min-height: 76px;
+}
+.post-avatar {
+    float: left;
+    margin-right: 10px;
+}
+.post-content {
+    word-wrap: break-word;
+    margin-left: 60px;
 }

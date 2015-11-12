@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
+use app\models\Post;
 
 
 class SiteController extends Controller
@@ -49,11 +50,33 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
         if (!Yii::$app->user->isGuest) {
-            $username = Yii::$app->user->identity->username;
-            return $this->render('indexForUser',['username' => $username]);
+            $userID = Yii::$app->user->identity->getId();
+            if ($id && ($user = User::findIdentity($id))) {
+                $posts = Post::find()
+                    ->where(['author_id' => $id])
+                    ->orderBy('created_at DESC')
+                    ->all();
+
+                if ($id == $userID) {
+                    $post = new Post();
+                    $post->author_id = $id;
+
+                    if ($post->load(Yii::$app->request->post()) && $post->save()) {
+                        return $this->refresh();
+                    }
+
+                    return $this->render('userPage', ['posts' => $posts, 'post' => $post, 'user'=> $user]);
+                } else {
+                    return $this->render('anotherUserPage', ['posts' => $posts, 'user'=> $user]);
+                }
+
+
+            } else {
+                return $this->redirect(Yii::$app->homeUrl . $userID);
+            }
         }
         return $this->render('index');
     }

@@ -32,10 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => '\yii\i18n\Formatter',
                         'nullDisplay' => 'Не указано',
                     ],
+                    'options' => [
+                        'class' => 'table table-hover',
+                        'style' => 'background-color: white;',
+                    ],
                 ]) ?>
-                <p class="pull-right">
-                    <?= Html::a('Редактировать', ['update'], ['class' => 'btn btn-primary']) ?>
-                </p>
+                <?= Html::a('Редактировать', ['update'], ['class' => 'btn btn-primary']) ?>
             </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
