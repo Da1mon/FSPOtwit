@@ -10,6 +10,11 @@
 /* @var $user app\models\User */
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+
+$this->registerJsFile(
+    Yii::$app->homeUrl.'scripts/comment.js',
+    ['depends'=>'app\assets\AppAsset']
+);
 ?>
 <div class="user-index">
     <div class="row">
@@ -27,20 +32,21 @@ use yii\bootstrap\ActiveForm;
     <?php foreach ($posts as $currentPost): ?>
         <div class="row">
             <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-lg-offset-2">
-                <div class="well opacity padding-fix">
-                    <?php
-                    if($user->avatar) {
-                        echo Html::img( Yii::$app->homeUrl.'uploads/sm_'. $user->avatar, ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
-                    } else {
-                        echo Html::img( Yii::$app->homeUrl.'img/avatars/sm_default_avatar.png', ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
-                    } ?>
+                <?=Html::beginTag('div',['class'=> 'well opacity padding-fix', 'data' => ['id'=> $currentPost->id]]) ?>
+                    <?php if($user->avatar) {
+                            echo Html::img( Yii::$app->homeUrl.'uploads/sm_'. $user->avatar, ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
+                        } else {
+                            echo Html::img( Yii::$app->homeUrl.'img/avatars/sm_default_avatar.png', ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
+                        }
+                    ?>
                     <p>
                         <strong>
-                            <?php echo Html::a( $user->firstname .' '. $user->lastname, Yii::$app->homeUrl. $user->id ) ?>
+                            <?= Html::a( $user->firstname .' '. $user->lastname, Yii::$app->homeUrl. $user->id ) ?>
                         </strong>
                     </p>
                     <div class="post-content"><?php echo $currentPost->content ?></div>
-                </div>
+                    <a class="comment-btn pull-right">комментировать</a>
+                <?= Html::endTag('div') ?>
             </div>
         </div>
     <?php endforeach; ?>

@@ -15,6 +15,8 @@ use yii\web\NotFoundHttpException;
  * @property integer $author_id
  * @property integer $created_at
  * @property integer $updated_at
+ * @property Comment[] $comments
+ * @property User $author
  */
 class Post extends ActiveRecord
 {
@@ -35,6 +37,7 @@ class Post extends ActiveRecord
             [['content', 'author_id'], 'required'],
             [['author_id', 'created_at', 'updated_at'], 'integer'],
             [['content'], 'string', 'max' => 140],
+            [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
         ];
     }
 
@@ -87,4 +90,13 @@ class Post extends ActiveRecord
             throw new NotFoundHttpException('The requested post does not exist.');
         }
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['post_id' => 'id']);
+    }
+
 }

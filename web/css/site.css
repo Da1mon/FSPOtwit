@@ -116,3 +116,7 @@ a.desc:after {
     word-wrap: break-word;
     margin-left: 60px;
 }
+.comment-btn {
+    top: -6px;
+    position: relative;
+}
