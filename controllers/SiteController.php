@@ -10,8 +10,9 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
 use app\models\Post;
-
-
+use app\models\Comment;
+use yii\web\Response;
+use yii\data\ActiveDataProvider;
 class SiteController extends Controller
 {
     public function behaviors()
@@ -55,30 +56,68 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             $userID = Yii::$app->user->identity->getId();
             if ($id && ($user = User::findIdentity($id))) {
-                $posts = Post::find()
-                    ->where(['author_id' => $id])
-                    ->orderBy('created_at DESC')
-                    ->all();
+
+                $dataProvider = new ActiveDataProvider([
+                    'query' => Post::find()
+                        ->where(['author_id' => $id])
+                        ->with('author','comments')
+                        ->orderBy('id DESC'),
+                ]);
+
+                $addPostFlag = false;
+                $post = new Post();
 
                 if ($id == $userID) {
-                    $post = new Post();
-                    $post->author_id = $id;
 
+                    $post->author_id =  $userID;
+                    $addPostFlag = true;
                     if ($post->load(Yii::$app->request->post()) && $post->save()) {
-                        return $this->refresh();
+                        $post = new Post();
                     }
-
-                    return $this->render('userPage', ['posts' => $posts, 'post' => $post, 'user'=> $user]);
-                } else {
-                    return $this->render('anotherUserPage', ['posts' => $posts, 'user'=> $user]);
                 }
 
-
+                return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post, 'addPostFlag' => $addPostFlag]);
             } else {
                 return $this->redirect(Yii::$app->homeUrl . $userID);
             }
         }
         return $this->render('index');
+    }
+
+    public function actionComment(){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $postId = (int)$_POST['postId'];
+            $authorId = (int)$_POST['authorId'];
+            $comment = new Comment();
+            $comment->post_id = $postId;
+            $html = $this->renderPartial('_commentForm', [
+                'comment' => $comment,
+                'postId' => $postId,
+                'authorId' =>  $authorId,
+            ]);
+            return array(
+                'id' => $postId,
+                'html' => $html,
+            );
+        }
+        return $this->goHome();
+    }
+
+    public function actionSendComment($id = null){
+
+        $model = new  Comment();
+        $model->load(Yii::$app->request->get());
+        $model->author_id = Yii::$app->user->getId();
+        $model->post_id = (int)$model->post_id;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $post = new Post();
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find()->where(['author_id' =>$id])->with('author','comments')->orderBy('id DESC'),
+            ]);
+            return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true]);
+        }
+        $this->goHome();
     }
 
     public function actionLogin()

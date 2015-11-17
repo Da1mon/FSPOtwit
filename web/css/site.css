@@ -100,7 +100,7 @@ a.desc:after {
 }
 
 .opacity {
-    background-color: rgba(255, 255, 255, 0.73);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .padding-fix {
@@ -119,4 +119,34 @@ a.desc:after {
 .comment-btn {
     top: -6px;
     position: relative;
+}
+.post-comment-wrap {
+    padding-right: 6px;
+    padding-left: 6px;
+    margin-bottom: 20px;
+}
+.post-comments {
+    background-color: rgba(255, 255, 255, 0.88);
+    border-top: 1px solid rgba(35, 35, 35, 0.58);
+    border-bottom: 1px solid #e3e3e3;
+    border-left: 1px solid #e3e3e3;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.post-comments li {
+    list-style-type: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+.post-comments li:not(:last-child) {
+    border: 1px solid #e3e3e3;
+}
+.post-comments li:not(:first-child) {
+    border-top: 1px solid rgba(35, 35, 35, 0.58);
+}
+.comment-form {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
 }

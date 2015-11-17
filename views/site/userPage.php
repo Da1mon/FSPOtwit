@@ -10,44 +10,39 @@
 /* @var $user app\models\User */
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\Pjax;
+use yii\widgets\ListView;
 
 $this->registerJsFile(
     Yii::$app->homeUrl.'scripts/comment.js',
     ['depends'=>'app\assets\AppAsset']
 );
 ?>
-<div class="user-index">
-    <div class="row">
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-lg-offset-2">
-            <div class="well opacity">
-                <?php $form = ActiveForm::begin(); ?>
-                <?= $form->field($post, 'content')->textarea(['maxlength' => true, 'rows' => 2]) ?>
-                <div class="form-group">
+<?php if ($addPostFlag): ?>
+    <div class="user-index">
+        <div class="row">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-lg-offset-2">
+                <div class="well opacity">
+                    <?php Pjax::begin(['id' => 'new_post', 'enablePushState' => false]) ?>
+                    <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true],'id'=>'new-post-form']); ?>
+                    <?= $form->field($post, 'content')->textarea(['maxlength' => true, 'rows' => 2])->label('новая публикация') ?>
                     <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+                    <?php ActiveForm::end(); ?>
+                    <?php Pjax::end(); ?>
                 </div>
-                <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
-    <?php foreach ($posts as $currentPost): ?>
-        <div class="row">
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-lg-offset-2">
-                <?=Html::beginTag('div',['class'=> 'well opacity padding-fix', 'data' => ['id'=> $currentPost->id]]) ?>
-                    <?php if($user->avatar) {
-                            echo Html::img( Yii::$app->homeUrl.'uploads/sm_'. $user->avatar, ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
-                        } else {
-                            echo Html::img( Yii::$app->homeUrl.'img/avatars/sm_default_avatar.png', ['alt'=>'avatar', 'class'=>'img-rounded post-avatar']);
-                        }
-                    ?>
-                    <p>
-                        <strong>
-                            <?= Html::a( $user->firstname .' '. $user->lastname, Yii::$app->homeUrl. $user->id ) ?>
-                        </strong>
-                    </p>
-                    <div class="post-content"><?php echo $currentPost->content ?></div>
-                    <a class="comment-btn pull-right">комментировать</a>
-                <?= Html::endTag('div') ?>
-            </div>
-        </div>
-    <?php endforeach; ?>
+<?php endif; ?>
+<div id="posts">
+    <?php Pjax::begin(['id' => 'notes','enablePushState' => false]) ?>
+        <?= ListView::widget([
+            'dataProvider' => $listDataProvider,
+            'layout' => "{items}",
+            'itemView' => function ($model, $key, $index, $widget) {
+                return $this->render('_post',['model' => $model]);
+            },
+        ]);
+    ?>
+    <?php Pjax::end() ?>
 </div>
