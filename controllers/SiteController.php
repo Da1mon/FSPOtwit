@@ -13,6 +13,7 @@ use app\models\Post;
 use app\models\Comment;
 use yii\web\Response;
 use yii\data\ActiveDataProvider;
+use app\models\Subscription;
 class SiteController extends Controller
 {
     public function behaviors()
@@ -76,7 +77,7 @@ class SiteController extends Controller
                     }
                 }
 
-                return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post, 'addPostFlag' => $addPostFlag]);
+                return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post, 'addPostFlag' => $addPostFlag, 'user'=> $user]);
             } else {
                 return $this->redirect(Yii::$app->homeUrl . $userID);
             }
@@ -104,6 +105,34 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionSubscribe(){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $subscriptionId = (int)$_POST['subscriptionId'];
+            $subscription = new Subscription();
+            $subscription->user_id = Yii::$app->user->getId();
+            $subscription->subscription_user_id = $subscriptionId;
+            $subscription->save();
+            return $this->renderPartial('_unsubscribeButton', ['id' => $subscriptionId]);
+        }
+        return $this->goHome();
+    }
+
+    public function actionUnsubscribe(){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $subscriptionId = (int)$_POST['subscriptionId'];
+            $subscription = Subscription::find()
+                ->where(['user_id' => Yii::$app->user->getId(),
+                'subscription_user_id' => $subscriptionId ])->one();
+            if($subscription ) {
+                $subscription->delete();
+                return $this->renderPartial('_subscribeButton', ['id' => $subscriptionId]);
+            }
+        }
+        return $this->goHome();
+    }
+
     public function actionSendComment($id = null){
 
         $model = new  Comment();
@@ -112,10 +141,11 @@ class SiteController extends Controller
         $model->post_id = (int)$model->post_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $post = new Post();
+            $user = User::findIdentity($id);
             $dataProvider = new ActiveDataProvider([
                 'query' => Post::find()->where(['author_id' =>$id])->with('author','comments')->orderBy('id DESC'),
             ]);
-            return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true]);
+            return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
         }
         $this->goHome();
     }

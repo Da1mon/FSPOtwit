@@ -8,6 +8,7 @@ use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 use yii\base\NotSupportedException;
 use \yii\db\ActiveRecord;
+use app\models\Subscription;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -266,6 +267,17 @@ class User extends ActiveRecord implements IdentityInterface
         return false;
     }
 
+    public function getSubscriptions()
+    {
+        return $this->hasMany(Subscription::className(), ['user_id' => 'id']);
+    }
 
+    public static function isSubscribe($idUser, $idSubscription) {
+        $subscription = Subscription::find()->where(['user_id' => $idUser, 'subscription_user_id' =>$idSubscription])->one();
+        if($subscription) {
+            return true;
+        }
+        return false;
+    }
 
 }

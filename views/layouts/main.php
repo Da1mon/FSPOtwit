@@ -38,7 +38,7 @@ AppAsset::register($this);
         'brandLabel' => 'FSPOtwit',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
 
@@ -47,6 +47,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/default/signup']];
         $menuItems[] = ['label' => 'Вход', 'url' => ['/default/login']];
     } else {
+        $menuItems[] = ['label' => 'Подписки', 'url' => ['/feed/index']];
         $menuItems[] = ['label' => 'Профиль', 'url' => ['/profile/index']];
         $menuItems[] = [
             'label' => 'Выход (' . Yii::$app->user->identity->username . ')',

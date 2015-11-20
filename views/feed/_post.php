@@ -37,8 +37,7 @@ if ($user->avatar) {
 </p>
 
 <div class="post-content"><?php echo $model->content ?></div>
-<!--                    <a class="comment-btn pull-right">комментировать</a>-->
-<?= Html::a('комментировать', ['site/comment'], [
+<?= Html::a('комментировать', ['feed/comment'], [
     'class' => 'comment-btn pull-right',
     'format' => 'raw',
     'data-on-done' => 'simpleDone',
