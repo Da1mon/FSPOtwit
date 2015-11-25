@@ -106,6 +106,7 @@ a.desc:after {
 .padding-fix {
     padding-top: 5px;
     padding-left: 5px;
+    padding-right: 5px;
     min-height: 76px;
 }
 .post-avatar {
@@ -119,6 +120,7 @@ a.desc:after {
 .comment-btn {
     top: -6px;
     position: relative;
+    margin-right: 5px;
 }
 .post-comment-wrap {
     padding-right: 6px;
@@ -149,4 +151,13 @@ a.desc:after {
 .comment-form {
     padding-right: 15px !important;
     padding-left: 15px !important;
+}
+
+.delete-post-btn {
+    float: right;
+    cursor: pointer;
+    height: 11px;
+    width: 11px;
+    opacity: 0.3;
+    display: none;
 }

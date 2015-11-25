@@ -2,7 +2,8 @@
  * Created by Ilya on 12.11.2015.
  */
 $(document).ready(function(){
-    $('#posts').on('click','.comment-btn',function (event){
+    var $selector = $('#posts');
+    $selector.on('click','.comment-btn',function (event){
         event.preventDefault();
         $.ajax({
             type: "post",
@@ -30,38 +31,35 @@ $(document).ready(function(){
             }
         });
     });
-    //$("a.comment-btn").click(function(event) {
-    //    //   alert($(this).parent().data("id"));
-    //    //    //$(this).parent().css("background-color", 'red')
-    //    alert('asd');
-    //    event.preventDefault();
-    //
-    //    $.ajax({
-    //        type: "post",
-    //        dataType: 'json',
-    //        url: $(this).attr('href'),
-    //        data: "id="+$(this).parent().data("id"),
-    //        success: function (data) {
-    //            //$('div[data-id='+data.id+'] ul div').after(data.html);
-    //            //$('div[data-id='+data.id+']+ul div li:last-child ').css('background-color','red');
-    //            if(!$('div[data-id='+data.id+'] + * div').children().hasClass("comment-form")){
-    //                var $selector = $('div[data-id='+data.id+']');
-    //                if($selector.css('margin-bottom') == '20px'){
-    //                    $selector.css('margin-bottom','0px');
-    //                    $selector.after(
-    //                        '<ul class="post-comment-wrap">' +
-    //                        '<div class="post-comments">' +
-    //                        data.html+
-    //                        '<div>'+
-    //                        '</ul>'
-    //                    )
-    //                }else {
-    //                    $('div[data-id='+data.id+']+ul div li:last-child ').after(data.html);
-    //                }
-    //            }
-    //        }
-    //    });
-    //});
+    $selector.on('mouseenter','.well',function (event){
+        $(event.target).children('.delete-post-btn').show();
+    });
+    $selector.on('mouseleave','.well',function (event){
+        $(event.target).children('.delete-post-btn').hide();
+    });
+    $selector.on('mouseenter','.delete-post-btn',function (event){
+        $(event.target).css('opacity','1');
+    });
+    $selector.on('mouseleave','.delete-post-btn',function (event){
+        $(event.target).css('opacity','0.3');
+    });
+    $selector.on('click','.delete-post-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('div[data-post-id=' + data + ']');
+                    if ($selector.css('margin-bottom') != '20px') {
+                        $('div[data-post-id=' + data + ']+ul').remove();
+                    }
+                    $selector.remove();
+                }
+            }
+        });
+    });
 
     $("#new_post").on("pjax:end", function() {
         $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView

@@ -6,6 +6,7 @@
  * Time: 19:28
  */
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <?php
@@ -27,7 +28,13 @@ if ($user->avatar) {
     echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
 }
 ?>
-
+<?php if($user->id == Yii::$app->user->getId()) {
+    echo Html::tag('div', '', [
+        'class' => 'delete-post-btn',
+        'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
+        'href' => Url::to(['site/delete-post', 'id' =>  $model->id]),
+    ]);
+} ?>
 <p>
     <strong>
         <?php $userName = ($user->firstname&&$user->lastname) ?
@@ -37,7 +44,6 @@ if ($user->avatar) {
 </p>
 
 <div class="post-content"><?php echo $model->content ?></div>
-<!--                    <a class="comment-btn pull-right">комментировать</a>-->
 <?= Html::a('комментировать', ['site/comment'], [
     'class' => 'comment-btn pull-right',
     'format' => 'raw',

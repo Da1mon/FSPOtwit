@@ -150,6 +150,16 @@ class SiteController extends Controller
         $this->goHome();
     }
 
+    public function actionDeletePost($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $post = Post::findOne($id);
+            $post->delete();
+            return $id;
+        }
+        return false;
+    }
+
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
