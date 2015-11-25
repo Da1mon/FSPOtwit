@@ -53,9 +53,9 @@ $(document).ready(function(){
                 if(data != false) {
                     var $selector = $('div[data-post-id=' + data + ']');
                     if ($selector.css('margin-bottom') != '20px') {
-                        $('div[data-post-id=' + data + ']+ul').remove();
+                        $('div[data-post-id=' + data + ']+ul').animate( {opacity: "hide"}, 500, function(){this.remove()});
                     }
-                    $selector.remove();
+                    $selector.animate( {opacity: "hide"}, 500, function(){this.remove()});
                 }
             }
         });
