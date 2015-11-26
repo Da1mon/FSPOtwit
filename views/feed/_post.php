@@ -6,11 +6,12 @@
  * Time: 19:28
  */
 use yii\helpers\Html;
-
+use yii\helpers\Url;
 ?>
 <?php
 $user = $model->author;
 $commentFlag = false;
+$id = Yii::$app->user->getId();
 if ($comments = $model->comments) {
     $commentFlag = true;
     echo Html::beginTag('div', ['class' => 'well opacity padding-fix', 'style' => 'margin-bottom:0px;', 'data' => ['post-id' => $model->id, 'author-id' => $user->id]]);
@@ -50,25 +51,32 @@ if ($commentFlag) {
     echo Html::beginTag('div', ['class' => 'post-comments']);
 }
 foreach ($comments as $comment): ?>
-    <li>
-        <?php $commentAuthor = $comment->author;
-        if ($commentAuthor->avatar) {
-            echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
-        } else {
-            echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
-        }
-        ?>
-        <p>
-            <strong>
-                <?php $commentName = ($commentAuthor->firstname&&$commentAuthor->lastname) ?
-                    $commentAuthor->firstname . ' ' . $commentAuthor->lastname :
-                    '@'. $commentAuthor->username   ?>
-                <?= Html::a($commentName, Yii::$app->homeUrl . $commentAuthor->id,[ 'data-pjax'=>0]) ?>
-            </strong>
-        </p>
+    <?= Html::beginTag('li', ['data-comment-id' => $comment->id]); ?>
+    <?php $commentAuthor = $comment->author;
+    if ($commentAuthor->avatar) {
+        echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+    } else {
+        echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+    }
+    ?>
+    <?php if($user->id == $id || $commentAuthor->id == $id ) {
+        echo Html::tag('div', '', [
+            'class' => ['delete-comment-btn','hidden-btn'],
+            'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
+            'href' => Url::to(['feed/delete-comment', 'id' =>  $comment->id]),
+        ]);
+    } ?>
+    <p>
+        <strong>
+            <?php $commentName = ($commentAuthor->firstname&&$commentAuthor->lastname) ?
+                $commentAuthor->firstname . ' ' . $commentAuthor->lastname :
+                '@'. $commentAuthor->username   ?>
+            <?= Html::a($commentName, Yii::$app->homeUrl . $commentAuthor->id,[ 'data-pjax'=>0]) ?>
+        </strong>
+    </p>
 
-        <div class="post-content"><?php echo $comment->content ?></div>
-    </li>
+    <div class="post-content"><?php echo $comment->content ?></div>
+    <?= Html::endTag('li') ?>
 <?php
 endforeach;
 if ($commentFlag) {

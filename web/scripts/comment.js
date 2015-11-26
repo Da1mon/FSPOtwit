@@ -11,8 +11,6 @@ $(document).ready(function(){
             url: $(this).attr('href'),
             data: "postId="+$(this).parent().data("post-id")+"&authorId="+$(this).parent().data("author-id"),
             success: function (data) {
-                //$('div[data-id='+data.id+'] ul div').after(data.html);
-                //$('div[data-id='+data.id+']+ul div li:last-child ').css('background-color','red');
                 if(!$('div[data-post-id='+data.id+'] + * div').children().hasClass("comment-form")){
                     var $selector = $('div[data-post-id='+data.id+']');
                     if($selector.css('margin-bottom') == '20px'){
@@ -32,15 +30,15 @@ $(document).ready(function(){
         });
     });
     $selector.on('mouseenter','.well',function (event){
-        $(event.target).children('.delete-post-btn').show();
+        $(event.target).children('.hidden-btn').show();
     });
     $selector.on('mouseleave','.well',function (event){
-        $(event.target).children('.delete-post-btn').hide();
+        $(event.target).children('.hidden-btn').hide();
     });
-    $selector.on('mouseenter','.delete-post-btn',function (event){
+    $selector.on('mouseenter','.hidden-btn',function (event){
         $(event.target).css('opacity','1');
     });
-    $selector.on('mouseleave','.delete-post-btn',function (event){
+    $selector.on('mouseleave','.hidden-btn',function (event){
         $(event.target).css('opacity','0.3');
     });
     $selector.on('click','.delete-post-btn',function (event){
@@ -56,6 +54,39 @@ $(document).ready(function(){
                         $('div[data-post-id=' + data + ']+ul').animate( {opacity: "hide"}, 500, function(){this.remove()});
                     }
                     $selector.animate( {opacity: "hide"}, 500, function(){this.remove()});
+                }
+            }
+        });
+    });
+
+    $selector.on('mouseenter','li',function (event){
+        $(event.target).children('.hidden-btn').show();
+    });
+    $selector.on('mouseleave','li',function (event){
+        $(event.target).children('.hidden-btn').hide();
+    });
+
+    $selector.on('click','.delete-comment-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('li[data-comment-id=' + data + ']');
+                    if($selector.siblings().length < 1) {
+                        var $commentWrap = $selector.parent().parent();
+                        $commentWrap.animate({opacity: "hide"}, 500, function () {
+                            $(this).prev().css('margin-bottom', '20px');
+                            this.remove();
+                        });
+
+                    } else {
+                        $selector.animate({opacity: "hide"}, 500, function () {
+                            this.remove();
+                        });
+                    }
                 }
             }
         });

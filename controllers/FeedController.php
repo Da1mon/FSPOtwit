@@ -57,6 +57,16 @@ class FeedController extends \yii\web\Controller
         return $this->goHome();
     }
 
+    public function actionDeleteComment($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $post = Comment::findOne($id);
+            $post->delete();
+            return $id;
+        }
+        return false;
+    }
+
     public function actionChange() {
         $dataProvider = new ActiveDataProvider([
             'query' => Subscription::find()->where(['user_id'=>Yii::$app->user->getId()])->with('subscriptionUser'),

@@ -153,7 +153,7 @@ a.desc:after {
     padding-left: 15px !important;
 }
 
-.delete-post-btn {
+.hidden-btn {
     float: right;
     cursor: pointer;
     height: 11px;
