@@ -57,6 +57,32 @@ class FeedController extends \yii\web\Controller
         return $this->goHome();
     }
 
+    public function actionEditCommentForm($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = Comment::findOne($id);
+            $html = $this->renderPartial('_editCommentForm', ['model' => $model]);
+            return array(
+                'id' => $id,
+                'html' => $html,
+            );
+        }
+        return false;
+    }
+    public function actionEditComment($id){
+        $model = Comment::findOne($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $subs = Subscription::findBySql('SELECT subscription_user_id FROM ft_subscription WHERE user_id ='. Yii::$app->user->getId())->asArray()
+                ->all();
+            $ids = ArrayHelper::getColumn($subs, 'subscription_user_id');
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find()->where(['author_id' =>$ids])->with('author','comments')->orderBy('created_at DESC'),
+            ]);
+            return $this->render('index',['listDataProvider' => $dataProvider]);
+        }
+        return $this->goHome();
+    }
+
     public function actionDeleteComment($id){
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;

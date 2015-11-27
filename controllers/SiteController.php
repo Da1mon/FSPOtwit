@@ -84,6 +84,31 @@ class SiteController extends Controller
         }
         return $this->render('index');
     }
+    public function actionEditPostForm($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = Post::findOne($id);
+            $html = $this->renderPartial('_editPostForm', ['model' => $model]);
+            return array(
+                'id' => $id,
+                'html' => $html,
+            );
+        }
+        return false;
+    }
+
+    public function actionEditPost($id){
+        $model = Post::findOne($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $post = new Post();
+            $user = User::findIdentity(Yii::$app->user->getId());
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find()->where(['author_id' =>Yii::$app->user->getId()])->with('author','comments')->orderBy('id DESC'),
+            ]);
+            return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
+        }
+        return $this->goHome();
+    }
 
     public function actionComment(){
         if (Yii::$app->request->isAjax) {
@@ -147,7 +172,33 @@ class SiteController extends Controller
             ]);
             return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
         }
-        $this->goHome();
+        return $this->goHome();
+    }
+
+    public function actionEditCommentForm($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = Comment::findOne($id);
+            $html = $this->renderPartial('_editCommentForm', ['model' => $model]);
+            return array(
+                'id' => $id,
+                'html' => $html,
+            );
+        }
+        return false;
+    }
+    public function actionEditComment($id){
+        $model = Comment::find()->where(['id'=> $id])->with('post.author')->one();
+        $pageId = $model->post->author->id;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $post = new Post();
+            $user = User::findIdentity($pageId);
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find()->where(['author_id' =>$pageId])->with('author','comments')->orderBy('id DESC'),
+            ]);
+            return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
+        }
+        return $this->goHome();
     }
 
     public function actionDeletePost($id){

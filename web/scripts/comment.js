@@ -30,10 +30,10 @@ $(document).ready(function(){
         });
     });
     $selector.on('mouseenter','.well',function (event){
-        $(event.target).children('.hidden-btn').show();
+        $(event.target).children('.buttons-wrap').show();
     });
     $selector.on('mouseleave','.well',function (event){
-        $(event.target).children('.hidden-btn').hide();
+        $(event.target).children('.buttons-wrap').hide();
     });
     $selector.on('mouseenter','.hidden-btn',function (event){
         $(event.target).css('opacity','1');
@@ -59,11 +59,27 @@ $(document).ready(function(){
         });
     });
 
+    $selector.on('click','.edit-post-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('div[data-post-id=' + data.id + ']');
+                    $selector.removeClass('padding-fix');
+                    $selector.html(data.html);
+                }
+            }
+        });
+    });
+
     $selector.on('mouseenter','li',function (event){
-        $(event.target).children('.hidden-btn').show();
+        $(event.target).children('.buttons-wrap').show();
     });
     $selector.on('mouseleave','li',function (event){
-        $(event.target).children('.hidden-btn').hide();
+        $(event.target).children('.buttons-wrap').hide();
     });
 
     $selector.on('click','.delete-comment-btn',function (event){
@@ -92,10 +108,32 @@ $(document).ready(function(){
         });
     });
 
+$selector.on('click','.edit-comment-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('li[data-comment-id=' + data.id + ']');
+                    $selector.css('padding','15px');
+                    $selector.html(data.html);
+                }
+            }
+        });
+    });
+
     $("#new_post").on("pjax:end", function() {
         $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView
     });
     $('#new_comment').on("pjax:end", function() {
+        $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView
+    });
+    $('#edit_post').on("pjax:end", function() {
+        $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView
+    });
+    $('#edit_comment').on("pjax:end", function() {
         $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView
     });
 });

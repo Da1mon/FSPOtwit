@@ -154,10 +154,17 @@ a.desc:after {
 }
 
 .hidden-btn {
-    float: right;
+    float: left;
     cursor: pointer;
     height: 11px;
     width: 11px;
     opacity: 0.3;
+
+}
+
+.buttons-wrap {
+    float: right;
+    height: 11px;
+    width: 27px;
     display: none;
 }

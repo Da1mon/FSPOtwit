@@ -30,11 +30,19 @@ if ($user->avatar) {
 }
 ?>
 <?php if($user->id == $id) {
+    echo Html::beginTag('div',['class'=>'buttons-wrap']);
+    echo Html::tag('div', '', [
+        'class' => ['edit-post-btn','hidden-btn'],
+        'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusedit.gif' . ') 0 0 no-repeat',
+                    'margin-right'=> '5px'],
+        'href' => Url::to(['site/edit-post-form', 'id' =>  $model->id]),
+    ]);
     echo Html::tag('div', '', [
         'class' => ['delete-post-btn','hidden-btn'],
         'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
         'href' => Url::to(['site/delete-post', 'id' =>  $model->id]),
     ]);
+    echo Html::endTag('div');
 } ?>
 <p>
     <strong>
@@ -67,11 +75,19 @@ foreach ($comments as $comment): ?>
         }
         ?>
         <?php if($user->id == $id || $commentAuthor->id == $id ) {
+            echo Html::beginTag('div',['class'=>'buttons-wrap']);
+            echo Html::tag('div', '', [
+                'class' => ['edit-comment-btn','hidden-btn'],
+                'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusedit.gif' . ') 0 0 no-repeat',
+                    'margin-right'=> '5px'],
+                'href' => Url::to(['site/edit-comment-form', 'id' =>  $comment->id]),
+            ]);
             echo Html::tag('div', '', [
                 'class' => ['delete-comment-btn','hidden-btn'],
                 'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
                 'href' => Url::to(['site/delete-comment', 'id' =>  $comment->id]),
             ]);
+            echo Html::endTag('div');
         } ?>
         <p>
             <strong>

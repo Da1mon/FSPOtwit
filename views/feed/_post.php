@@ -60,11 +60,19 @@ foreach ($comments as $comment): ?>
     }
     ?>
     <?php if($user->id == $id || $commentAuthor->id == $id ) {
+        echo Html::beginTag('div',['class'=>'buttons-wrap']);
+        echo Html::tag('div', '', [
+            'class' => ['edit-comment-btn','hidden-btn'],
+            'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusedit.gif' . ') 0 0 no-repeat',
+                'margin-right'=> '5px'],
+            'href' => Url::to(['feed/edit-comment-form', 'id' =>  $comment->id]),
+        ]);
         echo Html::tag('div', '', [
             'class' => ['delete-comment-btn','hidden-btn'],
             'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
             'href' => Url::to(['feed/delete-comment', 'id' =>  $comment->id]),
         ]);
+        echo Html::endTag('div');
     } ?>
     <p>
         <strong>
