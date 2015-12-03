@@ -64,38 +64,50 @@ if ($commentFlag) {
 }
 foreach ($comments as $comment): ?>
     <?= Html::beginTag('li', ['data-comment-id' => $comment->id]); ?>
-    <?php $commentAuthor = $comment->author;
-    if ($commentAuthor->avatar) {
-        echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
-    } else {
-        echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
-    }
-    ?>
-    <?php if($user->id == $id || $commentAuthor->id == $id ) {
-        echo Html::beginTag('div',['class'=>'buttons-wrap']);
-        echo Html::tag('div', '', [
-            'class' => ['edit-comment-btn','hidden-btn'],
-            'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusedit.gif' . ') 0 0 no-repeat',
-                'margin-right'=> '5px'],
-            'href' => Url::to(['feed/edit-comment-form', 'id' =>  $comment->id]),
-        ]);
-        echo Html::tag('div', '', [
-            'class' => ['delete-comment-btn','hidden-btn'],
-            'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
-            'href' => Url::to(['feed/delete-comment', 'id' =>  $comment->id]),
-        ]);
-        echo Html::endTag('div');
-    } ?>
-    <p>
-        <strong>
-            <?php $commentName = ($commentAuthor->firstname&&$commentAuthor->lastname) ?
-                $commentAuthor->firstname . ' ' . $commentAuthor->lastname :
-                '@'. $commentAuthor->username   ?>
-            <?= Html::a($commentName, Yii::$app->homeUrl . $commentAuthor->id,[ 'data-pjax'=>0]) ?>
-        </strong>
-    </p>
+        <?php $commentAuthor = $comment->author;
+        if ($commentAuthor->avatar) {
+            echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+        } else {
+            echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+        }
+        ?>
+        <?php if($user->id == $id || $commentAuthor->id == $id ) {
+            echo Html::beginTag('div',['class'=>'buttons-wrap']);
+            echo Html::tag('div', '', [
+                'class' => ['edit-comment-btn','hidden-btn'],
+                'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusedit.gif' . ') 0 0 no-repeat',
+                    'margin-right'=> '5px'],
+                'href' => Url::to(['feed/edit-comment-form', 'id' =>  $comment->id]),
+            ]);
+            echo Html::tag('div', '', [
+                'class' => ['delete-comment-btn','hidden-btn'],
+                'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/statusx_op.gif' . ') 0 0 no-repeat'],
+                'href' => Url::to(['feed/delete-comment', 'id' =>  $comment->id]),
+            ]);
+            echo Html::endTag('div');
+        } ?>
+        <p>
+            <strong>
+                <?php $commentName = ($commentAuthor->firstname&&$commentAuthor->lastname) ?
+                    $commentAuthor->firstname . ' ' . $commentAuthor->lastname :
+                    '@'. $commentAuthor->username   ?>
+                <?= Html::a($commentName, Yii::$app->homeUrl . $commentAuthor->id,[ 'data-pjax'=>0]) ?>
+            </strong>
+        </p>
 
-    <div class="post-content"><?php echo $comment->content ?></div>
+        <div class="post-content"><?php echo $comment->content ?></div>
+
+        <div class="commet-like-wrap">
+            <?=Html::tag('div', '', [
+                'class' => ($comment->likes) ? ['showen-btn','dislike-comment-btn'] : ['hidden-btn', 'like-comment-btn'],
+                'data-btn' => 'like',
+                'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/like.gif' . ') 0 0 no-repeat',
+                    'margin-right'=> '1px'],
+                'href' => ($comment->likes) ? Url::to(['feed/dislike-comment', 'id' =>  $comment->id]) : Url::to(['feed/like-comment', 'id' =>  $comment->id]),
+            ]); ?>
+            <div class="pull-right like-counter"><?php if($comment->like_counter != 0) {echo $comment->like_counter;} ?></div>
+        </div>
+
     <?= Html::endTag('li') ?>
 <?php
 endforeach;

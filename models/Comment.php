@@ -19,6 +19,7 @@ use yii\web\NotFoundHttpException;
  *
  * @property User $author
  * @property Post $post
+ * @property integer $like_counter
  */
 class Comment extends ActiveRecord
 {
@@ -96,5 +97,10 @@ class Comment extends ActiveRecord
         } else {
             throw new NotFoundHttpException('The requested comment does not exist.');
         }
+    }
+
+    public function getLikes()
+    {
+        return $this->hasMany(LikeComment::className(), ['comment_id' => 'id']);
     }
 }

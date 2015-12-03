@@ -10,6 +10,7 @@ use yii\web\Response;
 use app\models\Comment;
 use app\models\LikePost;
 use yii\helpers\Url;
+use app\models\LikeComment;
 
 class FeedController extends \yii\web\Controller
 {
@@ -20,9 +21,14 @@ class FeedController extends \yii\web\Controller
 
         $ids = ArrayHelper::getColumn($subs, 'subscription_user_id');
         $dataProvider = new ActiveDataProvider([
-            'query' => Post::find()->where(['author_id' =>$ids]) ->with(['author','comments','likes' => function ($query) {
-                $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
-            },
+            'query' => Post::find()->where(['author_id' =>$ids]) ->with([
+                'author',
+                'likes' => function ($query) {
+                    $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                 },
+                'comments.likes' => function ($query) {
+                    $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                },
             ])
                 ->orderBy('created_at DESC'),
         ]);
@@ -57,7 +63,12 @@ class FeedController extends \yii\web\Controller
                 ->all();
             $ids = ArrayHelper::getColumn($subs, 'subscription_user_id');
             $dataProvider = new ActiveDataProvider([
-                'query' => Post::find()->where(['author_id' =>$ids]) ->with(['author','comments','likes' => function ($query) {
+                'query' => Post::find()->where(['author_id' =>$ids]) ->with([
+                    'author',
+                    'likes' => function ($query) {
+                        $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                    },
+                    'comments.likes' => function ($query) {
                         $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
                     },
                 ])
@@ -87,8 +98,13 @@ class FeedController extends \yii\web\Controller
                 ->all();
             $ids = ArrayHelper::getColumn($subs, 'subscription_user_id');
             $dataProvider = new ActiveDataProvider([
-                'query' => Post::find()->where(['author_id' =>$ids]) ->with(['author','comments','likes' => function ($query) {
-                    $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                'query' => Post::find()->where(['author_id' =>$ids]) ->with([
+                    'author',
+                    'likes' => function ($query) {
+                        $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                    },
+                    'comments.likes' => function ($query) {
+                        $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
                     },
                 ])
                 ->orderBy('created_at DESC'),
@@ -150,6 +166,36 @@ class FeedController extends \yii\web\Controller
                 'id' => $id,
                 'counter' => $like->post->like_counter,
                 'href' => Url::to(['feed/like', 'id' =>  $id]),
+            );
+        }
+        return false;
+    }
+
+    public function actionLikeComment($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $like = new LikeComment();
+            $like->user_id = Yii::$app->user->getId();
+            $like->comment_id = $id;
+            $like->save();
+            return array(
+                'id' => $id,
+                'counter' => $like->comment->like_counter,
+                'href' => Url::to(['feed/dislike-comment', 'id' =>  $id]),
+            );
+        }
+        return false;
+    }
+
+    public function actionDislikeComment($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $like = LikeComment::find()->where(['user_id'=> Yii::$app->user->getId(), 'comment_id' => $id])->one();
+            $like->delete();
+            return array(
+                'id' => $id,
+                'counter' => $like->comment->like_counter,
+                'href' => Url::to(['feed/like-comment', 'id' =>  $id]),
             );
         }
         return false;

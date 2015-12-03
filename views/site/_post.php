@@ -118,6 +118,18 @@ foreach ($comments as $comment): ?>
         </p>
 
         <div class="post-content"><?php echo $comment->content ?></div>
+
+        <div class="commet-like-wrap">
+            <?=Html::tag('div', '', [
+                'class' => ($comment->likes) ? ['showen-btn','dislike-comment-btn'] : ['hidden-btn', 'like-comment-btn'],
+                'data-btn' => 'like',
+                'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/like.gif' . ') 0 0 no-repeat',
+                    'margin-right'=> '1px'],
+                'href' => ($comment->likes) ? Url::to(['site/dislike-comment', 'id' =>  $comment->id]) : Url::to(['site/like-comment', 'id' =>  $comment->id]),
+            ]); ?>
+            <div class="pull-right like-counter"><?php if($comment->like_counter != 0) {echo $comment->like_counter;} ?></div>
+        </div>
+
     <?= Html::endTag('li') ?>
 <?php
 endforeach;

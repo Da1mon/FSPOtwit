@@ -177,6 +177,7 @@ a.desc:after {
 }
 .like-wrap {
     float: right;
+    padding-right: 2px;
 }
 
 .like-counter {
@@ -185,4 +186,11 @@ a.desc:after {
     font-weight: bold;
     color: #7295b2;
     font-size: 12px
+}
+
+.commet-like-wrap {
+    float: right;
+    position: relative;
+    top: -8px;
+    right: 3px;
 }

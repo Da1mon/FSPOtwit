@@ -166,6 +166,48 @@ $(document).ready(function(){
         });
     });
 
+    $selector.on('click','.like-comment-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('li[data-comment-id=' + data.id+ '] div[data-btn=like]');
+                    $selector.removeClass('hidden-btn like-comment-btn');
+                    $selector.addClass('showen-btn dislike-comment-btn');
+                    $selector.css('opacity', '1');
+                    $selector.next().text(data.counter);
+                    $selector.attr('href',data.href);
+                }
+            }
+        });
+    });
+
+    $selector.on('click','.dislike-comment-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('li[data-comment-id=' + data.id + '] div[data-btn=like]');
+                    $selector.removeClass('showen-btn dislike-comment-btn');
+                    $selector.addClass('hidden-btn like-comment-btn');
+                    $selector.css('opacity', '0.3');
+                    if(data.counter == 0) {
+                        $selector.next().text('');
+                    } else {
+                        $selector.next().text(data.counter);
+                    }
+                    $selector.attr('href',data.href);
+                }
+            }
+        });
+    });
+
     $("#new_post").on("pjax:end", function() {
         $.pjax.reload({container: "#notes",timeout: 10000000000000});  //Reload GridView
     });
