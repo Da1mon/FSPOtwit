@@ -38,6 +38,18 @@ if ($user->avatar) {
 </p>
 
 <div class="post-content"><?php echo $model->content ?></div>
+
+<div class="like-wrap">
+    <?=Html::tag('div', '', [
+        'class' => ($model->likes) ? ['showen-btn','dislike-btn'] : ['hidden-btn', 'like-btn'],
+        'data-btn' => 'like',
+        'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/like.gif' . ') 0 0 no-repeat',
+            'margin-right'=> '1px'],
+        'href' => ($model->likes) ? Url::to(['feed/dislike', 'id' =>  $model->id]) : Url::to(['feed/like', 'id' =>  $model->id]),
+    ]); ?>
+    <div class="pull-right like-counter"><?php if($model->like_counter != 0) {echo $model->like_counter;} ?></div>
+</div>
+
 <?= Html::a('комментировать', ['feed/comment'], [
     'class' => 'comment-btn pull-right',
     'format' => 'raw',

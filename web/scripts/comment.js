@@ -108,7 +108,7 @@ $(document).ready(function(){
         });
     });
 
-$selector.on('click','.edit-comment-btn',function (event){
+    $selector.on('click','.edit-comment-btn',function (event){
         event.preventDefault();
         $.ajax({
             type: "post",
@@ -119,6 +119,48 @@ $selector.on('click','.edit-comment-btn',function (event){
                     var $selector = $('li[data-comment-id=' + data.id + ']');
                     $selector.css('padding','15px');
                     $selector.html(data.html);
+                }
+            }
+        });
+    });
+
+    $selector.on('click','.like-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('div[data-post-id=' + data.id + '] div[data-btn=like]');
+                    $selector.removeClass('hidden-btn like-btn');
+                    $selector.addClass('showen-btn dislike-btn');
+                    $selector.css('opacity', '1');
+                    $selector.next().text(data.counter);
+                    $selector.attr('href',data.href);
+                }
+            }
+        });
+    });
+
+    $selector.on('click','.dislike-btn',function (event){
+        event.preventDefault();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: $(this).attr('href'),
+            success: function (data) {
+                if(data != false) {
+                    var $selector = $('div[data-post-id=' + data.id + '] div[data-btn=like]');
+                    $selector.removeClass('showen-btn dislike-btn');
+                    $selector.addClass('hidden-btn like-btn');
+                    $selector.css('opacity', '0.3');
+                    if(data.counter == 0) {
+                        $selector.next().text('');
+                    } else {
+                        $selector.next().text(data.counter);
+                    }
+                    $selector.attr('href',data.href);
                 }
             }
         });

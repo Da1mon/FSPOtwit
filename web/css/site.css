@@ -159,7 +159,14 @@ a.desc:after {
     height: 11px;
     width: 11px;
     opacity: 0.3;
+}
 
+.showen-btn {
+    float: left;
+    cursor: pointer;
+    height: 11px;
+    width: 11px;
+    opacity: 1;
 }
 
 .buttons-wrap {
@@ -167,4 +174,15 @@ a.desc:after {
     height: 11px;
     width: 27px;
     display: none;
+}
+.like-wrap {
+    float: right;
+}
+
+.like-counter {
+    position: relative;
+    top: -3px;
+    font-weight: bold;
+    color: #7295b2;
+    font-size: 12px
 }

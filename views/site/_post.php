@@ -15,18 +15,22 @@ $commentFlag = false;
 $id = Yii::$app->user->getId();
 if ($comments = $model->comments) {
     $commentFlag = true;
-    echo Html::beginTag('div', ['class' => 'well opacity padding-fix', 'style' => 'margin-bottom:0px;', 'data' => ['post-id' => $model->id, 'author-id' => $user->id]]);
+    echo Html::beginTag('div', ['class' => 'well opacity padding-fix', 'style' => 'margin-bottom:0px;',
+        'data' => ['post-id' => $model->id, 'author-id' => $user->id]]);
 } else {
-    echo Html::beginTag('div', ['class' => 'well opacity padding-fix', 'data' => ['post-id' => $model->id, 'author-id' => $user->id]]);
+    echo Html::beginTag('div', ['class' => 'well opacity padding-fix',
+        'data' => ['post-id' => $model->id, 'author-id' => $user->id]]);
 }
 ?>
 
 <?php
 
 if ($user->avatar) {
-    echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $user->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+    echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $user->avatar,
+        ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
 } else {
-    echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+    echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png',
+        ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
 }
 ?>
 <?php if($user->id == $id) {
@@ -44,6 +48,7 @@ if ($user->avatar) {
     ]);
     echo Html::endTag('div');
 } ?>
+
 <p>
     <strong>
         <?php $userName = ($user->firstname&&$user->lastname) ?
@@ -53,6 +58,18 @@ if ($user->avatar) {
 </p>
 
 <div class="post-content"><?php echo $model->content ?></div>
+
+<div class="like-wrap">
+    <?=Html::tag('div', '', [
+    'class' => ($model->likes) ? ['showen-btn','dislike-btn'] : ['hidden-btn', 'like-btn'],
+    'data-btn' => 'like',
+    'style' => ['background'=>'url(' . Yii::$app->homeUrl . 'img/pics/like.gif' . ') 0 0 no-repeat',
+                'margin-right'=> '1px'],
+    'href' => ($model->likes) ? Url::to(['site/dislike', 'id' =>  $model->id]) : Url::to(['site/like', 'id' =>  $model->id]),
+    ]); ?>
+    <div class="pull-right like-counter"><?php if($model->like_counter != 0) {echo $model->like_counter;} ?></div>
+</div>
+
 <?= Html::a('комментировать', ['site/comment'], [
     'class' => 'comment-btn pull-right',
     'format' => 'raw',
@@ -69,9 +86,11 @@ foreach ($comments as $comment): ?>
     <?= Html::beginTag('li', ['data-comment-id' => $comment->id]); ?>
         <?php $commentAuthor = $comment->author;
         if ($commentAuthor->avatar) {
-            echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar, ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+            echo Html::img(Yii::$app->homeUrl . 'uploads/sm_' . $commentAuthor->avatar,
+                ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
         } else {
-            echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png', ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
+            echo Html::img(Yii::$app->homeUrl . 'img/avatars/sm_default_avatar.png',
+                ['alt' => 'avatar', 'class' => 'img-rounded post-avatar']);
         }
         ?>
         <?php if($user->id == $id || $commentAuthor->id == $id ) {

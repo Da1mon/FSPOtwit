@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -14,6 +15,7 @@ use app\models\Comment;
 use yii\web\Response;
 use yii\data\ActiveDataProvider;
 use app\models\Subscription;
+use app\models\LikePost;
 class SiteController extends Controller
 {
     public function behaviors()
@@ -61,7 +63,10 @@ class SiteController extends Controller
                 $dataProvider = new ActiveDataProvider([
                     'query' => Post::find()
                         ->where(['author_id' => $id])
-                        ->with('author','comments')
+                        ->with(['author','comments','likes' => function ($query) {
+                                $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                            },
+                        ])
                         ->orderBy('id DESC'),
                 ]);
 
@@ -103,7 +108,13 @@ class SiteController extends Controller
             $post = new Post();
             $user = User::findIdentity(Yii::$app->user->getId());
             $dataProvider = new ActiveDataProvider([
-                'query' => Post::find()->where(['author_id' =>Yii::$app->user->getId()])->with('author','comments')->orderBy('id DESC'),
+                'query' => Post::find()
+                    ->where(['author_id' => Yii::$app->user->identity->getId()])
+                    ->with(['author','comments','likes' => function ($query) {
+                            $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                        },
+                    ])
+                    ->orderBy('id DESC'),
             ]);
             return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
         }
@@ -168,7 +179,13 @@ class SiteController extends Controller
             $post = new Post();
             $user = User::findIdentity($id);
             $dataProvider = new ActiveDataProvider([
-                'query' => Post::find()->where(['author_id' =>$id])->with('author','comments')->orderBy('id DESC'),
+                'query' => Post::find()
+                    ->where(['author_id' => $id])
+                    ->with(['author','comments','likes' => function ($query) {
+                            $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                        },
+                    ])
+                    ->orderBy('id DESC'),
             ]);
             return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
         }
@@ -194,7 +211,13 @@ class SiteController extends Controller
             $post = new Post();
             $user = User::findIdentity($pageId);
             $dataProvider = new ActiveDataProvider([
-                'query' => Post::find()->where(['author_id' =>$pageId])->with('author','comments')->orderBy('id DESC'),
+                'query' => Post::find()
+                    ->where(['author_id' => $pageId])
+                    ->with(['author','comments','likes' => function ($query) {
+                            $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
+                        },
+                    ])
+                    ->orderBy('id DESC'),
             ]);
             return $this->render('userPage', ['listDataProvider' => $dataProvider, 'post' => $post,'addPostFlag' => true, 'user'=> $user]);
         }
@@ -217,6 +240,36 @@ class SiteController extends Controller
             $post = Comment::findOne($id);
             $post->delete();
             return $id;
+        }
+        return false;
+    }
+
+    public function actionLike($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $like = new LikePost();
+            $like->user_id = Yii::$app->user->getId();
+            $like->post_id = $id;
+            $like->save();
+            return array(
+                'id' => $id,
+                'counter' => $like->post->like_counter,
+                'href' => Url::to(['site/dislike', 'id' =>  $id]),
+            );
+        }
+        return false;
+    }
+
+    public function actionDislike($id){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $like = LikePost::find()->where(['user_id'=> Yii::$app->user->getId(), 'post_id' => $id])->one();
+            $like->delete();
+            return array(
+                'id' => $id,
+                'counter' => $like->post->like_counter,
+                'href' => Url::to(['site/like', 'id' =>  $id]),
+            );
         }
         return false;
     }
