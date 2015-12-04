@@ -370,4 +370,11 @@ class SiteController extends Controller
     {
         return $this->render('signup');
     }
+
+    public function actionUsers() {
+        $dataProvider = new ActiveDataProvider([
+            'query' => User::find()->where(['status' => User::STATUS_ACTIVE]),
+        ]);
+        return $this->render('users',['listDataProvider' => $dataProvider]);
+    }
 }

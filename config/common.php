@@ -28,6 +28,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '<_a:(login|logout|signup|email-confirm|request-password-reset|password-reset)>' => '/default/<_a>',
+                '<_a:(users)>' => '/site/<_a>',
                 '/<id:\d+>' => 'site/index',
             ],
         ],

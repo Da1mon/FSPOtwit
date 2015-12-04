@@ -47,6 +47,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/default/signup']];
         $menuItems[] = ['label' => 'Вход', 'url' => ['/default/login']];
     } else {
+        $menuItems[] = ['label' => 'Пользователи', 'url' => ['/site/users']];
         $menuItems[] = ['label' => 'Подписки', 'url' => ['/feed/index']];
         $menuItems[] = ['label' => 'Профиль', 'url' => ['/profile/index']];
         $menuItems[] = [
