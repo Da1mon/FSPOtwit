@@ -27,6 +27,7 @@ use app\models\Subscription;
  * @property string $lastname
  * @property string $avatar
  * @property string $filename
+ * @property string $admin
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -34,6 +35,11 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_BLOCKED = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_WAIT = 2;
+
+    const STATUS_DEFAULT = 0;
+    const STATUS_ADMIN = 1;
+
+
 
     /**
      * @inheritdoc
@@ -59,6 +65,9 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'integer'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
+            ['admin', 'integer'],
+            ['admin', 'default', 'value' => self::STATUS_DEFAULT],
+            ['admin', 'in', 'range' => array_keys(self::getAdminsArray())],
             ['firstname', 'string', 'min' => 2, 'max' => 20],
             ['firstname', 'match', 'pattern' => '/^[а-яА-ЯёЁa-zA-Z]+$/u', 'message' => 'Используется латиница или кириллица'],
             ['lastname', 'string', 'min' => 2, 'max' => 20],
@@ -86,6 +95,7 @@ class User extends ActiveRecord implements IdentityInterface
             'username' => 'Имя пользователя',
             'email' => 'Email',
             'status' => 'Статус',
+            'admin' => 'Роль',
             'firstname' => 'Имя',
             'lastname' => 'Фамилия',
 
@@ -106,12 +116,25 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return ArrayHelper::getValue(self::getStatusesArray(), $this->status);
     }
+
+    public function getAdminName()
+    {
+        return ArrayHelper::getValue(self::getAdminsArray(), $this->admin);
+    }
     public static function getStatusesArray()
     {
         return [
             self::STATUS_BLOCKED => 'Заблокирован',
             self::STATUS_ACTIVE => 'Активен',
             self::STATUS_WAIT => 'Ожидает подтверждения',
+        ];
+    }
+
+    public static function getAdminsArray()
+    {
+        return [
+            self::STATUS_DEFAULT => 'Пользователь',
+            self::STATUS_ADMIN => 'Администратор',
         ];
     }
     /**

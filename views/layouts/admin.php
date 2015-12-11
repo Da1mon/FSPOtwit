@@ -25,20 +25,13 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<?php
-    $path = Yii::$app->homeUrl . 'img/Background.jpg';
-    $options = [
-        'class' => ['wrap', 'background-img' ],
-        'style' => 'background-image:url('. $path .')',
-    ];
-    echo Html::beginTag('div', $options);
-?>
+<div class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => 'FSPOtwit',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-default navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
 
@@ -47,17 +40,13 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/default/signup']];
         $menuItems[] = ['label' => 'Вход', 'url' => ['/default/login']];
     } else {
-        if(Yii::$app->user->identity->admin == \app\models\User::STATUS_ADMIN) {
-            $menuItems[] =['label' => 'Admin-панель', 'items' => [
-                ['label' =>'Admin-панель', 'url' => ['/admin/default/index']],
-                ['label' => 'Пользователи', 'url' => ['/admin/users/index']],
-                ['label' => 'Публикации', 'url' => ['/admin/posts/index']],
-                ['label' => 'Коментарии', 'url' => ['/admin/comments/index']],
-            ]];
-        }
-        $menuItems[] = ['label' => 'Пользователи', 'url' => ['/site/users']];
-        $menuItems[] = ['label' => 'Подписки', 'url' => ['/feed/index']];
-        $menuItems[] = ['label' => 'Профиль', 'url' => ['/profile/index']];
+        $menuItems[] =['label' => 'Admin-панель', 'items' => [
+            ['label' =>'Admin-панель', 'url' => ['/admin/default/index']],
+            ['label' => 'Пользователи', 'url' => ['/admin/users/index']],
+            ['label' => 'Публикации', 'url' => ['/admin/posts/index']],
+            ['label' => 'Коментарии', 'url' => ['/admin/comments/index']],
+        ]];
+        $menuItems[] = ['label' => 'Сайт', 'url' => ['/site/index']];
         $menuItems[] = [
             'label' => 'Выход (' . Yii::$app->user->identity->username . ')',
             'url' => ['/default/logout'],
@@ -81,7 +70,7 @@ AppAsset::register($this);
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
-<?php echo Html::endTag('div') ?>
+</div>
 
 <footer class="footer">
     <div class="container">

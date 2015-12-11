@@ -194,3 +194,13 @@ a.desc:after {
     top: -8px;
     right: 3px;
 }
+
+.grid-view td.action-column {
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 0.1em;
+    max-width: 7em;
+}
+select.user-status {
+    max-width: 8em;
+}
