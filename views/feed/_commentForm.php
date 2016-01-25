@@ -20,7 +20,7 @@ use yii\helpers\Url;
         <?php $form = ActiveForm::begin(['method'=>'post','action' => Url::to(['feed/send-comment']),'options' => ['data-pjax' => true],
         ]); ?>
         <?= $form->field($comment, 'post_id')->hiddenInput()->label(false);?>
-        <?= $form->field($comment, 'content')->textarea(['maxlength' => true, 'rows' => 2])->label(false) ?>
+        <?= $form->field($comment, 'content')->textarea(['maxlength' => true, 'rows' => 2, 'style'=>['max-width'=>' 700px']])->label(false) ?>
         <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary new-comment']) ?>
         <?php ActiveForm::end();?>
     <?php Pjax::end() ?>

@@ -17,11 +17,12 @@ $this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-default-signup">
-    <p>Пожалуйста заполните все поля для регистрации</p>
+
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="well opacity">
+                <p>Пожалуйста заполните все поля для регистрации</p>
                 <?php $form = ActiveForm::begin(['id' => 'signup-form']); ?>
                 <?= $form->field($model, 'username') ?>
                 <?= $form->field($model, 'email') ?>

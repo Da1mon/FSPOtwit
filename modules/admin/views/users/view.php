@@ -33,10 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             'updated_at',
             'username',
-            'auth_key',
-            'email_confirm_token:email',
-            'password_hash',
-            'password_reset_token',
+            //'auth_key',
+            //'email_confirm_token:email',
+            //'password_hash',
+            //'password_reset_token',
             'email:email',
             [
                 'attribute' => 'status',
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'firstname',
             'lastname',
-            'filename',
+            //'filename',
             'avatar',
         ],
     ]) ?>
